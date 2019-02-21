@@ -15,6 +15,7 @@ class FilePanel(wx.Panel):
         super(FilePanel, self).__init__(parent = parent, style = wx.SIMPLE_BORDER)
 
         self.listctrl = FileCtrl(self,size = size, style = wx.LC_REPORT)
+        self.SetBackgroundColour(wx.RED)
 
         #####Layout################
 

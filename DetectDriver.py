@@ -2,4 +2,5 @@ import pyodbc
 
 driver_name = [x for x in pyodbc.drivers()]
 
-print(driver_name)
+for x in driver_name:
+    print(x)

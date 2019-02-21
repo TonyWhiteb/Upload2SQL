@@ -1,9 +1,17 @@
 import wx
-
+import pyodbc
 from BasicClass import FileLIstCtrl
+from BasicClass import Button as BT
+from Frame import Connect
+from wx.lib.pubsub import pub
 
 
 class AppFrame(wx.Frame):
+    '''
+    Main Frame
+
+    '''
+
 
     def __init__(self, title = 'Demo'):
     
@@ -11,11 +19,14 @@ class AppFrame(wx.Frame):
 
         panel = wx.Panel(self)
         panel.SetBackgroundColour(wx.WHITE)
+        pub.subscribe(self.OnListen, 'GetServerInfo')
 
         self.filectrl = FileLIstCtrl.FilePanel(panel, label= 'test')
 
-        self.btn_pnl = BtnPnl(panel)
-
+        # self.btn_pnl = BtnPnl(panel,connect = self.onConnect)
+        self.btn_pnl = BT.ButtonPanel(panel, ButtonName= 'Connect SQL', onButtonHandlers=self.onConnect)
+        # self.btn_pnl.Bind(wx.EVT_LEFT_DOWN, )
+        
         #######Layout#######
 
         layout_horz = wx.BoxSizer(wx.HORIZONTAL)
@@ -33,16 +44,35 @@ class AppFrame(wx.Frame):
 
         panel.SetSizerAndFit(layout_vert)
         self.Show()
+    
+    def onConnect(self,event):
+
+        Connect_frame = Connect.ConnectFrame()
+        Connect_frame.Show()
+        
+
+    def OnListen(self,Driver,Server,Database,ConnectType,ConnectFlag):
+    
+        self.Driver = Driver
+        self.Server = Server
+        self.Database = Database
+        self.ConnectType = ConnectType
+        self.ConnectFlag = ConnectFlag
+
+
+                        
+        
 
 
 
 class BtnPnl(wx.Panel):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,parent = None, connect = None):
     
-        super(BtnPnl, self).__init__(*args, **kwargs)
+        super(BtnPnl, self).__init__(parent = parent, connect = connect)
 
         ConnectBtn = wx.Button(self, label= 'Connect SQL')
+        ConnectBtn.Bind(wx.EVT_LEFT_DOWN, connect)
 
 
 #################Layout#######################
