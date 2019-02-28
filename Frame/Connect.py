@@ -1,3 +1,4 @@
+import time
 import wx
 import pyodbc
 from wx.lib.pubsub import pub
@@ -78,18 +79,21 @@ class ConnectFrame(wx.Frame):
         Server = self.Server_Box.GetValue()
         Database = self.Database_Box.GetValue()
         ConnectType = self.ConnectType_Box.GetConnectType()
-        
+
         try:
+            
             cnxn = pyodbc.connect("Driver={%s};"
                                   "Server=%s;"
                                   "Database=%s;"
                                   "Trusted_Connection=%s;" % (Driver, Server, Database, ConnectType))
+            
         except pyodbc.Error as ex:
 
             error_msg = ex.args[1]
             self.Warn(message = error_msg)
         ConnectFlag = True
         pub.sendMessage('GetServerInfo',Driver = Driver, Server = Server, Database = Database, ConnectType = ConnectType, ConnectFlag = ConnectFlag)
+        # print(ConnectFlag)
         self.Close()
 
 

@@ -17,6 +17,7 @@ class AppFrame(wx.Frame):
     
         super(AppFrame, self).__init__(parent = None, title = title, size = (800,600))
 
+        self.ConnectFlag = False
         panel = wx.Panel(self)
         panel.SetBackgroundColour(wx.WHITE)
         pub.subscribe(self.OnListen, 'GetServerInfo')
@@ -57,6 +58,12 @@ class AppFrame(wx.Frame):
         self.Database = Database
         self.ConnectType = ConnectType
         self.ConnectFlag = ConnectFlag
+        # print(self.ConnectFlag)
+        if self.ConnectFlag == True:
+            self.btn_pnl.myButton.SetLabel(self.Database)
+        print('done')
+        # self.RunTime = RuntimeV
+        # print(self.RunTime)
 
 
                         
@@ -64,30 +71,6 @@ class AppFrame(wx.Frame):
 
 
 
-class BtnPnl(wx.Panel):
 
-    def __init__(self,parent = None, connect = None):
-    
-        super(BtnPnl, self).__init__(parent = parent, connect = connect)
-
-        ConnectBtn = wx.Button(self, label= 'Connect SQL')
-        ConnectBtn.Bind(wx.EVT_LEFT_DOWN, connect)
-
-
-#################Layout#######################
-        VertSizer= wx.BoxSizer(wx.VERTICAL)
-        HorzSizer= wx.BoxSizer(wx.HORIZONTAL)
-
-        VertSizer.AddSpacer(10)
-        VertSizer.Add(ConnectBtn)
-        VertSizer.AddSpacer(10)
-
-        HorzSizer.AddSpacer(5)
-        HorzSizer.Add(VertSizer)
-        HorzSizer.AddSpacer(5)
-
-        self.SetSizer(HorzSizer)
-
-        self.Layout()
 
 

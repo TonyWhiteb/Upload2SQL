@@ -21,18 +21,18 @@ class ButtonPanel(wx.Panel):
         # pub.subscribe(self.OnListen, 'GetSelectCol')
 
 
-        myButton = wx.Button(self,-1,ButtonName)
+        self.myButton = wx.Button(self,-1,label = ButtonName)
 
 
 
-        myButton.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
+        self.myButton.Bind(wx.EVT_LEFT_DOWN, onButtonHandlers)
 
 #################Layout#######################
         VertSizer= wx.BoxSizer(wx.VERTICAL)
         HorzSizer= wx.BoxSizer(wx.HORIZONTAL)
 
         VertSizer.AddSpacer(10)
-        VertSizer.Add(myButton)
+        VertSizer.Add(self.myButton)
         VertSizer.AddSpacer(10)
 
         HorzSizer.AddSpacer(5)
@@ -42,3 +42,6 @@ class ButtonPanel(wx.Panel):
         self.SetSizer(HorzSizer)
 
         self.Layout()
+
+        # def SetLabel(self, NewLabel):
+        #     self.myButton.SetLabel(NewLabel)
