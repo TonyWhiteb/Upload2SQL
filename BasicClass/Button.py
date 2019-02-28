@@ -15,7 +15,7 @@ class ButtonPanel(wx.Panel):
 
 
         super(ButtonPanel, self).__init__(parent = parent , id = id)
-
+        self.SetBackgroundColour(wx.BLUE)
         
 
         # pub.subscribe(self.OnListen, 'GetSelectCol')

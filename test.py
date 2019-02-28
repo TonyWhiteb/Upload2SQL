@@ -1,140 +1,95 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+"""
+ZetCode wxPython tutorial
+
+In this example we create a Go To class
+layout with wx.BoxSizer.
+
+author: Jan Bodnar
+website: www.zetcode.com
+last modified: April 2018
+"""
+
 import wx
-import pyodbc
 
-class ConnectFrame(wx.Frame):
-    '''Connection Frame
-    
-    '''
-    def __init__(self, title = 'Connection', size = (300,350)):
-        '''__init__ method
-        
-        Keyword Arguments:
-            title {str} -- title name
-        '''
-        super(ConnectFrame,self).__init__( parent = None, size = size, title = title)
-        self.Default_Driver = 'SQL Server Native Client 11.0'
-        self.Default_Type = 'yes'
+class Example(wx.Frame):
 
-        panel = wx.Panel(self,style = wx.ALIGN_CENTER)
-        Driver_Label = wx.StaticText(panel, label = 'Driver :')
-        self.Driver_Box = MyChoice(panel,self.Default_Driver,size = (150,25))
-        Server_Label = wx.StaticText(panel, label = 'Server :')
-        self.Server_Box = wx.TextCtrl(panel,size =(150,25))
-        Database_Label = wx.StaticText(panel, label = 'Database :')
-        self.Database_Box= wx.TextCtrl(panel, size = (150,25))
-        ConnectType_Label = wx.StaticText(panel, label = 'ConnectType :')
-        self.ConnectType_Box = MyChoice(panel,self.Default_Type,['yes','no'],size = (150,25))
+    def __init__(self, parent, title):
+        super(Example, self).__init__(parent, title=title)
 
-        Connect_btn = wx.Button(panel,  label = 'Connect')
-        Connect_btn.Bind(wx.EVT_LEFT_DOWN, self.onConnect)
+        self.InitUI()
+        self.Centre()
 
-        ######Layout###########
+    def InitUI(self):
 
-        layout_horz = wx.BoxSizer(wx.HORIZONTAL)
-        layout_vert = wx.BoxSizer(wx.VERTICAL)
-        
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(Driver_Label)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(self.Driver_Box)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(Server_Label)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(self.Server_Box)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(Database_Label)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(self.Database_Box)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(ConnectType_Label)
-        layout_vert.AddSpacer(10)
-        layout_vert.Add(self.ConnectType_Box)
-        
-        layout_vert.AddSpacer(20)
-        layout_vert.Add(Connect_btn,0,wx.CENTER)
-        layout_vert.AddSpacer(10)
-        
-        layout_horz.AddStretchSpacer(prop=1)
-        layout_horz.Add(layout_vert, 0, wx.CENTER)
-        layout_horz.AddStretchSpacer(prop=1)
+        panel = wx.Panel(self)
 
-        panel.SetSizerAndFit(layout_horz)
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
 
-        self.Show()
-    # def GetDriver(self):
-    #     return self.Driver_Box.GetCurrentSelection()
-    # def GetServer(self):
-    #     return self.Server_Box.GetValue()
+        font.SetPointSize(9)
 
-    # def GetConnectType(self):
-    #     return self.ConnectType_Box.GetString(self.ConnectType_Box.GetCurrentSelection())
-    def onConnect(self,event):
-        '''Connect Button
-        
-        '''
-        Driver = self.Driver_Box.GetDriver()
-        Server = self.Server_Box.GetValue()
-        Database = self.Database_Box.GetValue()
-        ConnectType = self.ConnectType_Box.GetConnectType()
-        try:
-            cnxn = pyodbc.connect("Driver={%s};"
-                                  "Server=%s;"
-                                  "Database=%s;"
-                                  "Trusted_Connection=%s;" % (Driver, Server, Database, ConnectType))
-        except pyodbc.Error as ex:
+        vbox = wx.BoxSizer(wx.VERTICAL)
 
-            error_msg = ex.args[1]
-            self.Warn(message = error_msg)
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        st1 = wx.StaticText(panel, label='Class Name')
+        st1.SetFont(font)
+        hbox1.Add(st1, flag=wx.RIGHT, border=8)
+        tc = wx.TextCtrl(panel)
+        hbox1.Add(tc, proportion=1)
+        vbox.Add(hbox1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
-        cursor = cnxn.cursor()
-        print('done')
-        pass
+        vbox.Add((-1, 10))
 
-    
-    def Warn(self, message, caption = 'Warning!'):
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+        st2 = wx.StaticText(panel, label='Matching Classes')
+        st2.SetFont(font)
+        hbox2.Add(st2)
+        vbox.Add(hbox2, flag=wx.LEFT | wx.TOP, border=10)
 
-        dlg = wx.MessageDialog(self, message, caption, wx.OK | wx.ICON_WARNING)
+        vbox.Add((-1, 10))
 
-        dlg.ShowModal()
+        hbox3 = wx.BoxSizer(wx.HORIZONTAL)
+        tc2 = wx.TextCtrl(panel, style=wx.TE_MULTILINE)
+        hbox3.Add(tc2, proportion=1, flag=wx.EXPAND)
+        vbox.Add(hbox3, proportion=1, flag=wx.LEFT|wx.RIGHT|wx.EXPAND,
+            border=10)
 
-        dlg.Destroy() 
+        vbox.Add((-1, 25))
 
-class MyChoice(wx.ComboBox):
-    def __init__(self, parent,value,choices = [],size = (100,20)):
-    
-        super().__init__(parent = parent, value = value ,choices = choices,size = size )
+        hbox4 = wx.BoxSizer(wx.HORIZONTAL)
+        cb1 = wx.CheckBox(panel, label='Case Sensitive')
+        cb1.SetFont(font)
+        hbox4.Add(cb1)
+        cb2 = wx.CheckBox(panel, label='Nested Classes')
+        cb2.SetFont(font)
+        hbox4.Add(cb2, flag=wx.LEFT, border=10)
+        cb3 = wx.CheckBox(panel, label='Non-Project classes')
+        cb3.SetFont(font)
+        hbox4.Add(cb3, flag=wx.LEFT, border=10)
+        vbox.Add(hbox4, flag=wx.LEFT, border=10)
 
-        super().SetEditable(False)
+        vbox.Add((-1, 25))
 
-    def GetDriver(self):
-        if self.GetCurrentSelection() == -1:
-            GetDriver = 'SQL Server Native Client 11.0'
-        else:
-            GetDriver = self.GetString(self.GetCurrentSelection())
-        return GetDriver
-    
-    def GetConnectType(self):
-        if self.GetCurrentSelection() == -1:
-            GetConnectType = 'yes'
-        else:
-            GetConnectType = self.GetString(self.GetCurrentSelection())
-        return GetConnectType
+        hbox5 = wx.BoxSizer(wx.HORIZONTAL)
+        btn1 = wx.Button(panel, label='Ok', size=(70, 30))
+        hbox5.Add(btn1)
+        btn2 = wx.Button(panel, label='Close', size=(70, 30))
+        hbox5.Add(btn2, flag=wx.LEFT|wx.BOTTOM, border=5)
+        vbox.Add(hbox5, flag=wx.ALIGN_RIGHT|wx.RIGHT, border=10)
+
+        panel.SetSizer(vbox)
 
 
-        
+def main():
 
-
-        
-
-
-
-         
+    app = wx.App()
+    ex = Example(None, title='Go To Class')
+    ex.Show()
+    app.MainLoop()
 
 
 if __name__ == '__main__':
-
-    app = wx.App(False)
-
-    frame = ConnectFrame()
-
-    app.MainLoop()
+    main()

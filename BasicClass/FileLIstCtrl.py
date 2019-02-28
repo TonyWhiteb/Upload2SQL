@@ -10,11 +10,11 @@ class FileCtrl(wx.ListCtrl):
 
 class FilePanel(wx.Panel):
 
-    def __init__(self, parent, label = 'default title', size= (100,200)):
+    def __init__(self, parent, label = 'default title'):
 
         super(FilePanel, self).__init__(parent = parent, style = wx.SIMPLE_BORDER)
 
-        self.listctrl = FileCtrl(self,size = size, style = wx.LC_REPORT)
+        self.listctrl = FileCtrl(self, -1,style = wx.LC_REPORT)
         self.SetBackgroundColour(wx.RED)
 
         #####Layout################
@@ -23,11 +23,11 @@ class FilePanel(wx.Panel):
         layout_horz = wx.BoxSizer(wx.HORIZONTAL)
 
         layout_vert.AddSpacer(10)
-        layout_vert.Add(self.listctrl)
+        layout_vert.Add(self.listctrl,flag = wx.EXPAND, proportion = 1)
         layout_vert.AddSpacer(10)
 
         layout_horz.AddSpacer(10)
-        layout_horz.Add(layout_vert)
+        layout_horz.Add(layout_vert, flag = wx.EXPAND, proportion = 1)
         layout_horz.AddSpacer(10)
 
         self.SetSizer(layout_horz)

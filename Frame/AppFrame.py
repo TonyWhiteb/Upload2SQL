@@ -32,14 +32,13 @@ class AppFrame(wx.Frame):
         layout_horz = wx.BoxSizer(wx.HORIZONTAL)
         layout_vert = wx.BoxSizer(wx.VERTICAL)
 
+        layout_horz.Add(self.filectrl,flag = wx.EXPAND, proportion = 1, border=10)
         layout_horz.AddSpacer(10)
-        layout_horz.Add(self.filectrl)
-        layout_horz.AddSpacer(10)
-        layout_horz.Add(self.btn_pnl)
-        layout_horz.AddSpacer(10)
+        layout_horz.Add(self.btn_pnl, flag=wx.RIGHT| wx.EXPAND, border=8)
+
 
         layout_vert.AddSpacer(10)
-        layout_vert.Add(layout_horz)
+        layout_vert.Add(layout_horz, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, proportion = 1,border=10)
         layout_vert.AddSpacer(10)
 
         panel.SetSizerAndFit(layout_vert)
