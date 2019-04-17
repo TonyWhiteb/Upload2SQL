@@ -9,6 +9,11 @@ class FileCtrl(wx.ListCtrl):
         self.currRow = None
         
         self.Bind(wx.EVT_LEFT_DOWN, self.OnFindCurrentRow)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
+
+        self.numCols = 4
+        self.haveEntries = False
+        self.numEntries = 0
         
 
     
@@ -25,7 +30,11 @@ class FileCtrl(wx.ListCtrl):
         menu = wx.Menu()
         menuItem = menu.Append(-1, 'Delet This File')
 
-        self.Bind(wx.EVT_MENU, self.OnDeleteRow, memuItem)
+        self.Bind(wx.EVT_MENU, self.OnDeleteRow, menuItem)
+        
+        self.OnFindCurrentRow(event)
+
+        self.PopupMenu(menu,event.GetPosition())
     def OnDeleteRow(self, event):
 
         if(self.currRow >= 0):
@@ -37,6 +46,45 @@ class FileCtrl(wx.ListCtrl):
     def GetCurrRow(self):
         return self.currRow
 
+    def WriteTextTuple(self, rowDataTuple):
+
+        assert(len(rowDataTuple) >= self.numCols), 'Given data must have at least %d items.' %(self.numCols)
+
+        for idx in range(self.numCols):
+            assert(isinstance(rowDataTuple[idex],(bytes,str,int))), 'One or both data elements are not strings or numbers.'
+
+        self.rowDataTupleTruncated = tuple(rowDataTuple[:self.numCols])
+
+        if (self.rowDataTupleTruncated not in self.entriesList):
+
+            if (not self.haveEntries):
+
+                self.DeleteAllItems()
+
+            self.Append(self.rowDataTupleTruncated)
+
+            self.entriesList.append(self.rowDataTupleTruncated)
+
+            self.numEntries +=1
+
+            self.haveEntries = True
+
+            self.Autosize()
+
+    def Autosize(self):
+
+        for colIndex in [1,2,3]:
+
+            col_width = self.GetColumnWidth(colIndex)
+
+            self.SetColumnWidth( colIndex, wx.LIST_AUTOSIZE)
+
+            ColMaxWid = self.GetClientSize()[0]/2
+
+            input_width = self.GetColumnWidth( colIndex)
+            reasonableWid = max( col_width, input_width)
+            finalWid = min(reasonableWid, ColMaxWid)
+            self.SetColumnWidth( colIndex, reasonableWid)
 
 
 
