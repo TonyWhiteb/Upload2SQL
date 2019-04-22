@@ -94,9 +94,25 @@ class FilePanel(wx.Panel):
 
         super(FilePanel, self).__init__(parent = parent, style = wx.SIMPLE_BORDER)
 
-        self.listctrl = FileCtrl(self, -1,style = wx.LC_REPORT)
+        self.listctrl = FileCtrl(self, -1,style = wx.LC_REPORT|wx.BORDER_SUNKEN)
         self.SetBackgroundColour(wx.RED)
 
+        #####Column################
+        self.listctrl.InsertColumn(0,'File Path')
+        self.listctrl.InsertColumn(1, 'File Name')
+        self.listctrl.InsertColumn(2,'File Type')
+        self.listctrl.InsertColumn(3, 'Number of Columns')
+        # self.listctrl.InsertColumn(4, 'Record Number')
+    
+
+        #####Default Message#######
+        helpTextTuple = (' '*40, 'Drop Files and Folders Here',' '*len('File Type')*2
+                        ,' '*len('Number of Columns  ')*2)
+        self.listctrl.Append(helpTextTuple)
+        self.listctrl.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        self.listctrl.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+        self.listctrl.SetColumnWidth(2, wx.LIST_AUTOSIZE)
+        self.listctrl.SetColumnWidth(3, wx.LIST_AUTOSIZE)
         #####Layout################
 
         layout_vert = wx.BoxSizer(wx.VERTICAL)
